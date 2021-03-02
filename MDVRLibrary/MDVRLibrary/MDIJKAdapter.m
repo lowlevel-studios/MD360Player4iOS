@@ -21,4 +21,12 @@
     
     return adapter;
 }
+
++ (void) unwrap:(id)ijk_sdl_view{
+    
+    id<MDIJKSDLGLView> setter = (id<MDIJKSDLGLView>)ijk_sdl_view;
+    if ([setter respondsToSelector:@selector(setFrameCallback:)]) {
+        [setter setFrameCallback:nil];
+    }
+}
 @end

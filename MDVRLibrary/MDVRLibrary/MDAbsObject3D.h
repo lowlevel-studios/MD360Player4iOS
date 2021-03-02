@@ -45,9 +45,14 @@
 
 @end
 
+#pragma mark MDStereoSphere180
+@interface MDStereoSphere180 : MDAbsObject3D
+- (instancetype)initWithDirection:(MDDirection*) direction;
+@end
+
 #pragma mark MDStereoSphere3D
 @interface MDStereoSphere3D : MDAbsObject3D
-
+- (instancetype)initWithDirection:(MDDirection*) direction;
 @end
 
 @interface MDDome3D : MDAbsObject3D

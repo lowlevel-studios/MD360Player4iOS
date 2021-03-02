@@ -1,21 +1,21 @@
 //
-//  MDStereoSphere3D.m
+//  MDStereoSphere180.m
 //  MDVRLibrary
 //
-//  Created by ashqal on 16/6/30.
-//  Copyright © 2016年 asha. All rights reserved.
+//  Created by Miguel Boton on 02/02/2017.
+//  Copyright © 2017 Miguel Boton. All rights reserved.
 //
 
 #import "MDAbsObject3D.h"
 
-@interface MDStereoSphere3D(){
+@interface MDStereoSphere180(){
     float* mTextureBuffer2;
     MDDirection* direction;
 }
 @end
 
-@implementation MDStereoSphere3D
-
+@implementation MDStereoSphere180
+  
 - (instancetype)initWithDirection:(MDDirection *) direction{
     self = [super init];
     if (self) {
@@ -27,13 +27,13 @@
 - (NSString*)obtainObjPath{
     return nil;
 }
-
+    
 - (void)destroy {
     [super destroy];
     if (mTextureBuffer2 != NULL)  free(mTextureBuffer2);
-    mTextureBuffer2 = NULL;    
+    mTextureBuffer2 = NULL;
 }
-
+    
 - (float*)getTextureBuffer:(int)index{
     if (index == 1) {
         return mTextureBuffer2;
@@ -41,31 +41,32 @@
         return [super getTextureBuffer:index];
     }
 }
-
+    
 - (void)uploadTexCoordinateBufferIfNeed:(MD360Program*) program index:(int)index{
     [self markTexCoordinateChanged];
     [super uploadTexCoordinateBufferIfNeed:program index:index];
 }
-
-
+    
+    
 - (void)executeLoad{
-    generateStereoSphere(18,128,self,self->direction);
+    generateStereoSphere180(18,128,self,self->direction);
     
     [self markChanged];
 }
-
+    
 - (void)setTextureBuffer2:(float*)buffer size:(int)size{
     int size_t = sizeof(float)*size;
     mTextureBuffer2 = malloc(size_t);
     memcpy(mTextureBuffer2, buffer, size_t);
 }
-
+    
 #define ES_PI  (3.14159265f)
-
+    
 #pragma mark generate sphere
-int generateStereoSphere (float radius, int numSlices, MDStereoSphere3D* object3D, MDDirection* direction) {
+int generateStereoSphere180 (float radius, int numSlices, MDStereoSphere180* object3D, MDDirection* direction) {
     int i;
     int j;
+    
     int numParallels = numSlices / 2;
     int numVertices = ( numParallels + 1 ) * ( numSlices + 1 );
     int numIndices = numParallels * numSlices * 6;
@@ -78,8 +79,8 @@ int generateStereoSphere (float radius, int numSlices, MDStereoSphere3D* object3
     
     
     for ( i = 0; i < numParallels + 1; i++ ) {
-        for ( j = 0; j < numSlices + 1; j++ ) {
-            int vertex = ( i * (numSlices + 1) + j ) * 3;
+        for ( j = 0; j < numParallels + 1; j++ ) {
+            int vertex = ( i * (numParallels + 1) + j ) * 3;
             
             if ( vertices ) {
                 vertices[vertex + 0] = - radius * sinf ( angleStep * (float)i ) * sinf ( angleStep * (float)j );
@@ -90,20 +91,20 @@ int generateStereoSphere (float radius, int numSlices, MDStereoSphere3D* object3
             // NSLog(@"%f %f %f",vertices[vertex + 0],vertices[vertex + 1],vertices[vertex + 2]);
             
             if (texCoords) {
-                int texIndex = ( i * (numSlices + 1) + j ) * 2;
+                int texIndex = ( i * (numParallels + 1) + j ) * 2;
                 
-                if (direction == MDDirectionVertical) {
+                if (direction == MDDirectionHorizontal) {
                     texCoords[texIndex + 0] = (float) j / (float) numSlices;
-                    texCoords[texIndex + 1] = ((float) i / (float) (numParallels)) * 0.5f;
-
-                    texCoords2[texIndex + 0] = (float) j / (float) numSlices;
-                    texCoords2[texIndex + 1] = ((float) i / (float) (numParallels)) * 0.5f + 0.5f;
+                    texCoords[texIndex + 1] = (float) i / (float) (numParallels);
+                    
+                    texCoords2[texIndex + 0] = ((float) j / (float) numSlices) + 0.5f;
+                    texCoords2[texIndex + 1] = (float) i / (float) (numParallels);
                 } else {
                     texCoords[texIndex + 0] = (float) j / (float) numSlices;
-                    texCoords[texIndex + 1] = ((float) i / (float) (numParallels)) * 0.5f;
-
-                    texCoords2[texIndex + 0] = (float) j / (float) numSlices + 0.5f;
-                    texCoords2[texIndex + 1] = ((float) i / (float) (numParallels)) * 0.5f;
+                    texCoords[texIndex + 1] = (float) i / (float) (numParallels);
+                    
+                    texCoords2[texIndex + 0] = ((float) j / (float) numSlices);
+                    texCoords2[texIndex + 1] = (float) i / (float) (numParallels) + 0.5f;
                 }
             }
         }
@@ -113,13 +114,13 @@ int generateStereoSphere (float radius, int numSlices, MDStereoSphere3D* object3
     if ( indices != NULL ) {
         short* indexBuf = indices;
         for ( i = 0; i < numParallels ; i++ ) {
-            for ( j = 0; j < numSlices; j++ ) {
-                *indexBuf++ = (short)(i * ( numSlices + 1 ) + j); // a
-                *indexBuf++ = (short)(( i + 1 ) * ( numSlices + 1 ) + j); // b
-                *indexBuf++ = (short)(( i + 1 ) * ( numSlices + 1 ) + ( j + 1 )); // c
-                *indexBuf++ = (short)(i * ( numSlices + 1 ) + j); // a
-                *indexBuf++ = (short)(( i + 1 ) * ( numSlices + 1 ) + ( j + 1 )); // c
-                *indexBuf++ = (short)(i * ( numSlices + 1 ) + ( j + 1 )); // d
+            for ( j = 0; j < numParallels; j++ ) {
+                *indexBuf++ = (short)(i * ( numParallels + 1 ) + j); // a
+                *indexBuf++ = (short)(( i + 1 ) * ( numParallels + 1 ) + j); // b
+                *indexBuf++ = (short)(( i + 1 ) * ( numParallels + 1 ) + ( j + 1 )); // c
+                *indexBuf++ = (short)(i * ( numParallels + 1 ) + j); // a
+                *indexBuf++ = (short)(( i + 1 ) * ( numParallels + 1 ) + ( j + 1 )); // c
+                *indexBuf++ = (short)(i * ( numParallels + 1 ) + ( j + 1 )); // d
                 
             }
         }

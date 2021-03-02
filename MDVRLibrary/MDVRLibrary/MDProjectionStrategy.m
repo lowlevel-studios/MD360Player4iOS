@@ -58,15 +58,24 @@
 @end
 
 #pragma mark StereoSphereProjection
-@interface StereoSphereProjection : AbsProjectionMode<MD360DirectorFactory>
+@interface StereoSphereProjection : AbsProjectionMode<MD360DirectorFactory> {
+    MDDirection* direction;
+}
 @property (nonatomic,strong) MDStereoSphere3D* object3D;
 @end
 
 @implementation StereoSphereProjection
 
+- (instancetype)initWithDirection:(MDDirection*) direction{
+    self = [super init];
+    if (self) {
+        self->direction = direction;
+    }
+    return self;
+}
 
 - (void) on{
-    self.object3D = [[MDStereoSphere3D alloc]init];
+    self.object3D = [[MDStereoSphere3D alloc]initWithDirection:self->direction];
     [MDObject3DHelper loadObj:self.object3D];
 }
 
@@ -86,6 +95,46 @@
     return director;
 }
 
+@end
+
+#pragma mark StereoSphere180Projection
+@interface StereoSphere180Projection : AbsProjectionMode<MD360DirectorFactory> {
+    MDDirection* direction;
+}
+@property (nonatomic,strong) MDStereoSphere180* object3D;
+@end
+
+@implementation StereoSphere180Projection
+
+- (instancetype)initWithDirection:(MDDirection*) direction{
+    self = [super init];
+    if (self) {
+        self->direction = direction;
+    }
+    return self;
+}
+    
+- (void) on{
+    self.object3D = [[MDStereoSphere180 alloc]initWithDirection:self->direction];
+    [MDObject3DHelper loadObj:self.object3D];
+}
+    
+    
+- (MDAbsObject3D*) getObject3D{
+    return self.object3D;
+}
+    
+- (id<MD360DirectorFactory>) hijackDirectorFactory{
+    // hijack by self
+    return self;
+}
+    
+- (MD360Director*) createDirector:(int) index{
+    MD360Director* director = [[MD360Director alloc]init];
+    [director setup];
+    return director;
+}
+    
 @end
 
 
@@ -240,12 +289,18 @@
             return [[DomeProjection alloc] initWithSizeContext:self.configuration.sizeContext degree:180 isUpper:YES];
         case MDModeProjectionDome230Upper:
             return [[DomeProjection alloc] initWithSizeContext:self.configuration.sizeContext degree:230 isUpper:YES];
-        case MDModeProjectionStereoSphere:
-            return [[StereoSphereProjection alloc] init];
+        case MDModeProjectionStereoSphereHorizontal:
+            return [[StereoSphereProjection alloc] initWithDirection:MDDirectionHorizontal];
+        case MDModeProjectionStereoSphereVertical:
+            return [[StereoSphereProjection alloc] initWithDirection:MDDirectionVertical];
         case MDModeProjectionPlaneFit:
         case MDModeProjectionPlaneCrop:
         case MDModeProjectionPlaneFull:
             return [PlaneProjection create:mode sizeContext:self.configuration.sizeContext];
+        case MDModeProjectionStereoSphere180Horizontal:
+            return [[StereoSphere180Projection alloc] initWithDirection:MDDirectionHorizontal];
+        case MDModeProjectionStereoSphere180Vertical:
+            return [[StereoSphere180Projection alloc] initWithDirection:MDDirectionVertical];
         case MDModeProjectionSphere: default:
             return [[SphereProjection alloc] init];
     }
@@ -269,7 +324,7 @@
 }
 
 - (NSArray*) createModes{
-    return [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:MDModeProjectionSphere], [NSNumber numberWithInt:MDModeProjectionDome180],[NSNumber numberWithInt:MDModeProjectionDome230], [NSNumber numberWithInt:MDModeProjectionDome180Upper],[NSNumber numberWithInt:MDModeProjectionDome230Upper],[NSNumber numberWithInt:MDModeProjectionStereoSphere],[NSNumber numberWithInt:MDModeProjectionPlaneFit],[NSNumber numberWithInt:MDModeProjectionPlaneCrop],[NSNumber numberWithInt:MDModeProjectionPlaneFull],nil];
+    return [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:MDModeProjectionSphere], [NSNumber numberWithInt:MDModeProjectionDome180],[NSNumber numberWithInt:MDModeProjectionDome230], [NSNumber numberWithInt:MDModeProjectionDome180Upper],[NSNumber numberWithInt:MDModeProjectionDome230Upper],[NSNumber numberWithInt:MDModeProjectionStereoSphereHorizontal],[NSNumber numberWithInt:MDModeProjectionStereoSphereVertical],[NSNumber numberWithInt:MDModeProjectionStereoSphere180Horizontal],[NSNumber numberWithInt:MDModeProjectionStereoSphere180Vertical],[NSNumber numberWithInt:MDModeProjectionPlaneFit],[NSNumber numberWithInt:MDModeProjectionPlaneCrop],[NSNumber numberWithInt:MDModeProjectionPlaneFull],nil];
 }
 
 - (MDAbsObject3D*) getObject3D{

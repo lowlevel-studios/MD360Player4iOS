@@ -78,7 +78,6 @@
     self.motionManager.showsDeviceMovementDisplay = YES;
     NSOperationQueue* motionQueue = [[NSOperationQueue alloc] init];
     [self.motionManager setDeviceMotionUpdateInterval:1.0f / 30];
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     [self.motionManager startDeviceMotionUpdatesToQueue:motionQueue withHandler:^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error) {
         
         CMAttitude* attitude = motion.attitude;
@@ -86,6 +85,7 @@
         
         GLKMatrix4 sensor = GLKMatrix4Identity;
         CMQuaternion quaternion = attitude.quaternion;
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
         sensor = [GLUtil calculateMatrixFromQuaternion:&quaternion orientation:orientation];
         
         sensor = GLKMatrix4RotateX(sensor, M_PI_2);

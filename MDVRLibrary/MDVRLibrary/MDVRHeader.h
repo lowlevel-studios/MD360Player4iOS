@@ -49,9 +49,8 @@
 @end
 
 @interface MDIJKAdapter : MDVideoFrameAdapter
-
 + (MDVideoFrameAdapter*) wrap:(id)ijk_sdl_view;
-
++ (void) unwrap:(id)ijk_sdl_view;
 @end
 
 @interface MDSizeContext : NSObject

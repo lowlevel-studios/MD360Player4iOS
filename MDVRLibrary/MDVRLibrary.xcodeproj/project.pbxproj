@@ -36,6 +36,7 @@
 		5EF561C21D44FFF60023A3DF /* MDPlane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF561C11D44FFF60023A3DF /* MDPlane.m */; };
 		5EF64E151D393D6F00F11A08 /* MDVideoFrameAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF64E141D393D6F00F11A08 /* MDVideoFrameAdapter.m */; };
 		5EF64E171D39421800F11A08 /* MDIJKAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF64E161D39421800F11A08 /* MDIJKAdapter.m */; };
+		67B63ECE1E51CAF2007FF0E5 /* MDStereoSphere180.m in Sources */ = {isa = PBXBuildFile; fileRef = 67B63ECD1E51CAF2007FF0E5 /* MDStereoSphere180.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -102,6 +103,7 @@
 		5EF64E121D393C4E00F11A08 /* MDExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDExt.h; sourceTree = "<group>"; };
 		5EF64E141D393D6F00F11A08 /* MDVideoFrameAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDVideoFrameAdapter.m; sourceTree = "<group>"; };
 		5EF64E161D39421800F11A08 /* MDIJKAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDIJKAdapter.m; sourceTree = "<group>"; };
+		67B63ECD1E51CAF2007FF0E5 /* MDStereoSphere180.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDStereoSphere180.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 				5E1EE71D1CBEA5ED004E0B79 /* MDAbsObject3D.h */,
 				5E1EE71E1CBEA5ED004E0B79 /* MDAbsObject3D.m */,
 				5E59F6371D242A6B002DADC9 /* MDSphere3D.m */,
+				67B63ECD1E51CAF2007FF0E5 /* MDStereoSphere180.m */,
 				5E59F6391D242AFC002DADC9 /* MDStereoSphere3D.m */,
 				5E6151C21D277574008DAD4E /* MDDome3D.m */,
 				5EF561C11D44FFF60023A3DF /* MDPlane.m */,
@@ -287,6 +290,7 @@
 				5E6A43B81D369F1700E6BA74 /* MDRGBAProgram.m in Sources */,
 				5E1EE7331CBEA5ED004E0B79 /* MD360Texture.m in Sources */,
 				5E6A43BE1D37657C00E6BA74 /* MDRGBAVideoTexture.m in Sources */,
+				67B63ECE1E51CAF2007FF0E5 /* MDStereoSphere180.m in Sources */,
 				5E1EE72F1CBEA5ED004E0B79 /* GLUtil.m in Sources */,
 				5E1EE7301CBEA5ED004E0B79 /* MD360Director.m in Sources */,
 				5EF64E151D393D6F00F11A08 /* MDVideoFrameAdapter.m in Sources */,
